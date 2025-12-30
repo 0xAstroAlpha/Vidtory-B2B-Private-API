@@ -103,23 +103,14 @@ curl -X POST https://oldapi84.vidtory.net/api/video/generate \
 ```
 - Endpoints: `/api/video/generate` hoặc alias `/api/generate-video/d7a53315-74b0-4d92-b7bc-0cebc51412e2`
 - `generationMode` là bắt buộc (dùng `generationMode` hoặc alias `mode`). Các mode hợp lệ:
-  - `TEXT_ONLY`: chỉ prompt; mọi asset (startImage/endImage/referenceImages) bị cấm.
   - `START_ONLY`: bắt buộc `startImage`; `endImage` và `referenceImages` bị cấm.
   - `START_AND_END`: bắt buộc cả `startImage` và `endImage`; `referenceImages` bị cấm.
   - `REFERENCE_IMAGES`: bắt buộc `referenceImages` (ít nhất 1 item, nên kèm `imageUsageType`); `startImage`/`endImage` bị cấm; chỉ hỗ trợ aspect landscape (portrait trả 400).
 - Aspect ratio cho phép: `VIDEO_ASPECT_RATIO_LANDSCAPE`, `VIDEO_ASPECT_RATIO_PORTRAIT` (referenceImages chỉ landscape).
-- Upscale: chỉ hỗ trợ landscape; portrait sẽ trả `Upscale is not supported for ...`.
+
 
 Ví dụ per-mode:
 ```bash
-# TEXT_ONLY
-curl -X POST https://oldapi84.vidtory.net/api/video/generate \
-  -H "Content-Type: application/json" -H "X-API-Key: <AK_API_KEY>" \
-  -d '{
-    "prompt": "Sunset over the desert",
-    "generationMode": "TEXT_ONLY",
-    "aspectRatio": "VIDEO_ASPECT_RATIO_LANDSCAPE"
-  }'
 
 # START_ONLY
 curl -X POST https://oldapi84.vidtory.net/api/video/generate \
@@ -216,40 +207,4 @@ Khi xong sẽ trả:
 }
 ```
 Download file (429/202 nếu chưa sẵn): `curl -L -H "X-API-Key: <AK_API_KEY>" https://oldapi84.vidtory.net/api/video/jobs/<JOB_ID>/file -o out.mp4`.
-
-### Video relax generate (POST `/api/video-relax/generate`)
-Body/flow giống video generate, model “relaxed” (veo_*_relaxed) và route alias `/api/generate-video-relax/8e3c1c75-5f65-4c83-9d50-1b3a9b0f7b9e`. Chọn mode giống video generate (referenceImages/start+end/text-only/start-only), nhưng portrait vẫn không upscale, referenceImages vẫn chỉ landscape. Response/poll/download giữ nguyên schema.
-
-### Video upscale sync (POST `/api/video/upscale`)
-```bash
-curl -X POST https://oldapi84.vidtory.net/api/video/upscale \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: <AK_API_KEY>" \
-  -d '{
-    "mediaGenerationId": "labs-media-123",   # lấy từ payload video generate
-    "aspectRatio": "VIDEO_ASPECT_RATIO_LANDSCAPE",
-    "upscaleModelKey": "veo_2_1080p_upsampler_8s"
-  }'
-```
-Response (200) đồng bộ:
-```json
-{
-  "sourceMediaGenerationId": "labs-media-123",
-  "mediaGenerationId": "labs-media-123-upscaled",
-  "operationName": "operations/video-upscale-456",
-  "status": "MEDIA_GENERATION_STATUS_COMPLETE",
-  "seed": 98765,
-  "sceneId": "1b7d8d8d-3a3f-45f0-94c6-5f9b0e15c558",
-  "videoModelKey": "veo_2_1080p_upsampler_8s",
-  "url": "https://oldapi84.vidtory.net/outputs/video-upscaled.mp4",
-  "video": {
-    "fileName": "video-upscaled.mp4",
-    "size": 41234123,
-    "mimeType": "video/mp4",
-    "url": "https://oldapi84.vidtory.net/outputs/video-upscaled.mp4",
-    "publicUrl": "https://oldapi84.vidtory.net/outputs/video-upscaled.mp4"
-  }
-}
-```
-Yêu cầu `mediaGenerationId` từ job generate đã hoàn thành; aspectRatio phải hợp lệ với mode đã tạo (portrait sẽ bị từ chối upscale).
 
