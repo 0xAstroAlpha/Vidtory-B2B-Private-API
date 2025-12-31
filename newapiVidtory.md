@@ -208,3 +208,6 @@ Khi xong sẽ trả:
 ```
 Download file (429/202 nếu chưa sẵn): `curl -L -H "X-API-Key: <AK_API_KEY>" https://oldapi84.vidtory.net/api/video/jobs/<JOB_ID>/file -o out.mp4`.
 
+### Video relax generate (POST `/api/video-relax/generate`)
+
+Body/flow giống video generate, model “relaxed” (veo_*_relaxed) và route alias `/api/generate-video-relax/8e3c1c75-5f65-4c83-9d50-1b3a9b0f7b9e`. Chọn mode giống video generate (referenceImages/start+end/text-only/start-only), nhưng portrait vẫn không upscale, referenceImages vẫn chỉ landscape. Response/poll/download giữ nguyên schema.
