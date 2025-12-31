@@ -36,19 +36,24 @@ Hoàn tất (200) trả:
 {
   "status": "done",
   "jobId": "c0c3e8fe-1b4a-4ad5-b6fa-1e4d9f2f8b67",
-  "requestId": "adb7039f-9f2a-4b62-8afd-c503d3dd4efa",
-  "prompt": "An office group photo of these people, they are smiling",
-  "outputs": [
-    {
-      "fileName": "nano-brian-1-1764211044921.jpg",
-      "size": 122130,
-      "contentType": "image/jpeg",
-      "url": "https://oldapi84.vidtory.net/outputs/nano-brian-1-1764211044921.jpg"
-    }
-  ]
+  "result": {
+    "requestId": "adb7039f-9f2a-4b62-8afd-c503d3dd4efa",
+    "prompt": "An office group photo of these people, they are smiling",
+    "outputs": [
+      {
+        "fileName": "nano-brian-1-1764211044921.jpg",
+        "size": 122130,
+        "contentType": "image/jpeg",
+        "url": "https://oldapi84.vidtory.net/outputs/nano-brian-1-1764211044921.jpg"
+      }
+    ]
+  }
 }
 ```
+*Lưu ý: `outputs` nằm lồng trong `result`.*
+
 Lỗi auth/thiếu key: 401 `API_KEY_VERIFICATION_ERROR`.
+Lỗi 403 Forbidden: Bắt buộc thêm header `Origin: https://vidtory.net` (hoặc domain whitelist) để vượt qua Nginx check.
 
 ### Poll nano/nano2 (GET `/api/image/nano2/jobs/:jobId`)
 ```bash
