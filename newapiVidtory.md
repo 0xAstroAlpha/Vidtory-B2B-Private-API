@@ -10,6 +10,7 @@ IMG_BASE64=$(base64 -w0 ./ref.jpg)
 curl -X POST https://oldapi84.vidtory.net/api/image/nano2 \
   -H "Content-Type: application/json" \
   -H "X-API-Key: <AK_API_KEY>" \
+  -H "Origin: https://vidtory.net" \
   -d "{
     \"contents\": [{
       \"parts\": [
